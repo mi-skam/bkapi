@@ -42,7 +42,7 @@ class BKAPI:
     }
     VERSION = '1.0.1'
 
-    def load_config(self):
+    def _load_config(self):
         """Loads user configuration from YAML file.
         """
         with open(self.config_file) as f:
@@ -55,15 +55,15 @@ class BKAPI:
             self.config_file = config_file
 
         self.arguments = docopt(__doc__, version=BKAPI.VERSION)
-        self.action = self.load_config()
-        self.action['action'], self.action['data'] = self.select()
+        self.action = self._load_config()
+        self.action['action'], self.action['data'] = self._select()
 
     def _remove_brackets(self, elem):
         """Removes angular brackets from tags like <a> -> a.
         """
         return elem.strip("<>")
 
-    def select(self):
+    def _select(self):
         """returns action command and data parameter
         """
         # returns only set arguments and options
