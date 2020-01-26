@@ -33,14 +33,17 @@ from docopt import docopt
 
 
 class BKAPI:
+    """Wraps BK Api and returns an object wit
+    """
+
     CONFIG = {
         'url': 'https://cloud-api.virtualhosts.de/',
         'config': './interact.yaml'
     }
-    VERSION = '1.0.0'
+    VERSION = '1.0.1'
 
     def load_config(self):
-        """Loads user configuration from YAML file
+        """Loads user configuration from YAML file.
         """
         with open(self.config_file) as f:
             return yaml.load(f, Loader=yaml.SafeLoader)
@@ -48,13 +51,15 @@ class BKAPI:
     def __init__(self, config_file=None):
         if config_file == None:
             self.config_file = self.CONFIG['config']
+        else:
+            self.config_file = config_file
 
         self.arguments = docopt(__doc__, version=BKAPI.VERSION)
         self.action = self.load_config()
         self.action['action'], self.action['data'] = self.select()
 
     def _remove_brackets(self, elem):
-        """removes angular brackets from tags like <a> -> a
+        """Removes angular brackets from tags like <a> -> a.
         """
         return elem.strip("<>")
 
