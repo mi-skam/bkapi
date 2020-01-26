@@ -13,6 +13,7 @@ Python 3
 pip
 PyYAML
 docopt
+requests
 ```
 
 ### Installing
