@@ -23,9 +23,9 @@ Usage:
     interact vserver_rootpassword <vid> <root_pw>
     interact vserver_shutdown <vid> [force_mode]
     interact vserver_vncinfo <vid>
-	interact vservers_list
+    interact vservers_list
     interact zones_list
-	interact (-h | --help | --version)
+    interact (-h | --help | --version)
 """
 import requests
 import yaml
@@ -33,14 +33,14 @@ from docopt import docopt
 
 
 class BKAPI:
-    """Wraps BK Api and returns an object wit
+    """Wraps BK Api and populates a dict ready for requests
     """
 
     CONFIG = {
         'url': 'https://cloud-api.virtualhosts.de/',
         'config': './interact.yaml'
     }
-    VERSION = '1.0.1'
+    VERSION = '1.0.2'
 
     def _load_config(self):
         """Loads user configuration from YAML file.
