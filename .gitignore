@@ -117,3 +117,4 @@ dmypy.json
 # Ignore my interact yaml file
 interact.yaml
 
+.vscode/settings.json
