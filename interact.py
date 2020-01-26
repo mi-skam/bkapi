@@ -37,18 +37,21 @@ class BKAPI:
         'url': 'https://cloud-api.virtualhosts.de/',
         'config': './interact.yaml'
     }
-
-    def __init__(self, config_file=None):
-        if config_file == None:
-            self.config_file = self.CONFIG['config']
-
-        self.arguments = docopt(__doc__)
+    VERSION = '1.0.0'
 
     def load_config(self):
         """Loads user configuration from YAML file
         """
         with open(self.config_file) as f:
             return yaml.load(f, Loader=yaml.SafeLoader)
+
+    def __init__(self, config_file=None):
+        if config_file == None:
+            self.config_file = self.CONFIG['config']
+
+        self.arguments = docopt(__doc__, version=BKAPI.VERSION)
+        self.action = self.load_config()
+        self.action['action'], self.action['data'] = self.select()
 
     def _remove_brackets(self, elem):
         """removes angular brackets from tags like <a> -> a
@@ -72,9 +75,7 @@ class BKAPI:
 
 if __name__ == "__main__":
     bk = BKAPI()
-    action = bk.load_config()
-    action['action'], action['data'] = bk.select()
 
-    r = requests.post(BKAPI.CONFIG['url'], data=action)
+    r = requests.post(BKAPI.CONFIG['url'], data=bk.action)
     print(r.text) if (r.status_code == 200) else print(
         f"API error ${r.status_code}")
