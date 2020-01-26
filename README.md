@@ -34,7 +34,7 @@ Install the necessary dependencies.
 (env) pip install requests
 ```
 
-Running `python ./interact.py` should show all the _actions_ possible.
+Running `python ./interact.py` shows all available **commands** and `python ./interact.py --version` the current **version**.
 
 Set up the _configuration_ file with the help of [EXAMPLE.interact.yaml](EXAMPLE.interact.yaml)
 
