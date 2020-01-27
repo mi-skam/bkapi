@@ -1,6 +1,6 @@
 # BKAPI
 
-Access the BK Cloud API with Python
+Access the BK Cloud [API](http://kb.providerservice.com/bk-cloud/api/bkcloud-api.html) with Python
 
 ## Getting Started
 
