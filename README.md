@@ -2,6 +2,13 @@
 
 Access the BK Cloud [API](http://kb.providerservice.com/bk-cloud/api/bkcloud-api.html) with Python
 
+e.G. get the vnc link to a vserver of yours
+```
+python ./interactive.py vserver_vncinfo <your_id>
+--> 
+https://vncproxy-dus2-de.virtualhosts.de/novnc/vnc_auto.html?mvid=1234567809003049304f&vncpw=123abcd
+```
+
 ## Getting Started
 
 Clone the git repository to your local folder.

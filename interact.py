@@ -77,10 +77,29 @@ class BKAPI:
 
         return command, parameter
 
+def get_vncinfo(response_text):
+    """ clean up servers response of vncserver_vncinfo and return a clickable link 😀
+    """
+    # 1. split the string into a list of tuples
+    temp = [ i.split(": ") for i in result.split("\n") ]
+    # 2. unfortunately there are some tuples with just one element, we need to remove them
+    remove_singles = lambda tuples: filter(lambda x: len(x) > 1 , tuples)
+
+    return dict(remove_singles(temp))
+
+
 
 if __name__ == "__main__":
     bk = BKAPI()
-
     r = requests.post(BKAPI.CONFIG['url'], data=bk.action)
-    print(r.text) if (r.status_code == 200) else print(
+    result = r.text
+    
+    # Adapt formatting for vserver_vncinfo
+    if bk.action['action'] == 'vserver_vncinfo':
+        u = get_vncinfo(result)
+        # https://vncproxy-dus2-de.virtualhosts.de/novnc/vnc_auto.html?mvid=52c0d49cded81c9cb12f29c10e68d1ef&vncpw=QUU5y77w
+        print(f"https://{u['vncproxy']}/novnc/vnc_auto.html?mvid={u['mvid']}&vncpw={u['vncpw']}")
+        exit()
+
+    print(result) if (r.status_code == 200) else print(
         f"API error ${r.status_code}")
