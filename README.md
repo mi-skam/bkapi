@@ -3,9 +3,10 @@
 Access the BK Cloud [API](http://kb.providerservice.com/bk-cloud/api/bkcloud-api.html) with Python
 
 e.G. get the vnc link to a vserver of yours
+
 ```
 python ./interactive.py vserver_vncinfo <your_id>
---> 
+-->
 https://vncproxy-dus2-de.virtualhosts.de/novnc/vnc_auto.html?mvid=1234567809003049304f&vncpw=123abcd
 ```
 
@@ -41,7 +42,19 @@ Install the necessary dependencies.
 (env) pip install requests
 ```
 
-Running `python ./interact.py` shows all available **commands** and `python ./interact.py --version` the current **version**.
+Install the package
+
+```
+(env) python setup.py install
+```
+
+Install with nix
+
+```
+nix-build -f ./default.nix -i
+```
+
+Running `bkapi (or: python ./interact.py)` shows all available **commands** and `--version` the current **version**.
 
 Set up the _configuration_ file with the help of [EXAMPLE.interact.yaml](EXAMPLE.interact.yaml)
 
@@ -52,7 +65,7 @@ cp EXAMPLE.interact.yaml interact.yaml
 Example call:
 
 ```
-(env) python ./interactive.py vservers_list
+(env) bkapi vservers_list
 ```
 
 ## Built With
