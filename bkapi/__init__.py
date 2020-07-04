@@ -4,29 +4,30 @@
 Consumes BK Cloud API
 
 Usage:
-    interact accounts_list
-    interact actions_available
-    interact bootimages_list
-    interact flavors_list
-    interact images_list
-    interact update_reverse_dns_name_of_ip4 <address> <rdns>
-    interact update_reverse_dns_name_of_primary_ip4 <address> <rdns>
-    interact update_reverse_dns_name_of_ip6 <address> <rdns>
-    interact vserver_add <flavor_id> <zone_id> <image_name> <host_name> <rootpw> [sshkeys] [customscript] [motd]
-    interact vserver_change_hostname <vid> <host_name>
-    interact vserver_delete  <vid>
-    interact vserver_delete  <client_id> <primary_ip>
-    interact vserver_info <vid>
-    interact vserver_reinstall <vid> <root_pw> <image_name> [sshkeys] [motd]
-    interact vserver_reboot <vid> [force_mode]
-    interact vserver_rescue <vid> [force_mode] [boot_image]
-    interact vserver_rootpassword <vid> <root_pw>
-    interact vserver_shutdown <vid> [force_mode]
-    interact vserver_vncinfo <vid>
-    interact vservers_list
-    interact zones_list
-    interact (-h | --help | --version)
+    bkapi accounts_list
+    bkapi actions_available
+    bkapi bootimages_list
+    bkapi flavors_list
+    bkapi images_list
+    bkapi update_reverse_dns_name_of_ip4 <address> <rdns>
+    bkapi update_reverse_dns_name_of_primary_ip4 <address> <rdns>
+    bkapi update_reverse_dns_name_of_ip6 <address> <rdns>
+    bkapi vserver_add <flavor_id> <zone_id> <image_name> <host_name> <rootpw> [sshkeys] [customscript] [motd]
+    bkapi vserver_change_hostname <vid> <host_name>
+    bkapi vserver_delete  <vid>
+    bkapi vserver_delete  <client_id> <primary_ip>
+    bkapi vserver_info <vid>
+    bkapi vserver_reinstall <vid> <root_pw> <image_name> [sshkeys] [motd]
+    bkapi vserver_reboot <vid> [force_mode]
+    bkapi vserver_rescue <vid> [force_mode] [boot_image]
+    bkapi vserver_rootpassword <vid> <root_pw>
+    bkapi vserver_shutdown <vid> [force_mode]
+    bkapi vserver_vncinfo <vid>
+    bkapi vservers_list
+    bkapi zones_list
+    bkapi (-h | --help | --version)
 """
+import os
 import requests
 import yaml
 from docopt import docopt
@@ -38,15 +39,22 @@ class BKAPI:
 
     CONFIG = {
         'url': 'https://cloud-api.virtualhosts.de/',
-        'config': './interact.yaml'
+        'config': 'bkapi.yaml'
     }
-    VERSION = '1.0.2'
+    VERSION = '1.1.0'
 
-    def _load_config(self):
+    def load_config(self):
         """Loads user configuration from YAML file.
         """
-        with open(self.config_file) as f:
-            return yaml.load(f, Loader=yaml.SafeLoader)
+        config_home = os.environ['APPDATA'] if 'APPDATA' in os.environ else os.path.join(
+            os.environ['HOME'], '.config')
+
+        config_file = os.path.join(config_home, self.config_file)
+        with open(config_file) as f:
+            try:
+                return yaml.safe_load(f)
+            except yaml.YAMLError as ye:
+                raise(ye)
 
     def __init__(self, config_file=None):
         if config_file == None:
@@ -55,7 +63,7 @@ class BKAPI:
             self.config_file = config_file
 
         self.arguments = docopt(__doc__, version=BKAPI.VERSION)
-        self.action = self._load_config()
+        self.action = self.load_config()
         self.action['action'], self.action['data'] = self._select()
 
     def _remove_brackets(self, elem):
