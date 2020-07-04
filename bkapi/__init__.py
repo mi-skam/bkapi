@@ -41,7 +41,7 @@ class BKAPI:
         'url': 'https://cloud-api.virtualhosts.de/',
         'config': 'bkapi.yaml'
     }
-    VERSION = '1.1.0'
+    VERSION = '1.1.1'
 
     def load_config(self):
         """Loads user configuration from YAML file.
@@ -90,7 +90,7 @@ def get_vncinfo(response_text):
     """ clean up servers response of vncserver_vncinfo and return a clickable link 😀
     """
     # 1. split the string into a list of tuples
-    temp = [i.split(": ") for i in result.split("\n")]
+    temp = [i.split(": ") for i in response_text.split("\n")]
     # 2. unfortunately there are some tuples with just one element, we need to remove them
     def remove_singles(tuples): return filter(lambda x: len(x) > 1, tuples)
 
