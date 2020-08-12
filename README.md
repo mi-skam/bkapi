@@ -51,7 +51,7 @@ Install the package
 Install with nix
 
 ```
-nix-build -f ./default.nix -i
+nix-env -f ./default.nix -i
 ```
 
 Running `bkapi (or: python ./interact.py)` shows all available **commands** and `--version` the current **version**.
